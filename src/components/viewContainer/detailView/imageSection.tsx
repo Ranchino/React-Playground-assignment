@@ -14,7 +14,7 @@ interface State {
 
 export default class ImageSection extends Component<Props, State> {
     /** Not a good place for the key.. well.. what the heck.. - GET YOUR OWN! */
-    readonly accessKey = "ADD_YOUR_ACCESS_KEY_HERE"
+    readonly accessKey = "0320e99cd8724084bfafbe7eb240c6f3b7e8d5220aaee12b642a76fc5512f85a"
     readonly imageDatabaseApiUrl = "https://api.unsplash.com/search/photos/"
 
     state: State = {
