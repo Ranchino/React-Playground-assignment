@@ -24,9 +24,9 @@ export default class DetailView extends Component<Props, State> {
         return this.props.match.url.substr(1);
     }
 
-    get imageSrc() {
+    /* get imageSrc() {
         return `../assets/${this.view}.jpg`;
-    }
+    } */
 
     openModal = () => this.setState({ isModalOpen: true });
     closeModal = () => this.setState({ isModalOpen: false });
@@ -36,7 +36,7 @@ export default class DetailView extends Component<Props, State> {
             <ThemeContext.Consumer>
                 {({ theme }) => (
                     <div style={container}>
-                        <img src={this.imageSrc} style={{ ...fullscreenAbsolute }}/>
+                        {/* <img src={this.imageSrc} style={{ ...fullscreenAbsolute }}/> */}
                         <div style={{ ...content(theme), ...fullscreenAbsolute }}>
 
                             <div style={flexContainer}>
@@ -74,7 +74,7 @@ const content: ThemedCSSProperties = (theme) => ({
 const container: CSSProperties = {
     position: 'relative',
     width: '100%',
-    height: '100%'
+    height: '90%'
 }
 
 const flexContainer: CSSProperties = {
