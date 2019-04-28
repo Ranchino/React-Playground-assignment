@@ -71,8 +71,10 @@ export default class SearchBox extends Component<Props, State>{
 
 
 const searchContainer: CSSProperties = {
-    marginTop: '20em',
-    marginLeft: '35em',
+    marginTop: '5em',
+    marginLeft: '37em',
+    height: '2em',
+    width: '20em'
 }
 
 const searchStyle: ThemedCSSProperties = (theme) => ({
