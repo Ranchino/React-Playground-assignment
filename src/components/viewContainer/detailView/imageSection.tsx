@@ -24,22 +24,44 @@ export default class ImageSection extends Component<Props, State> {
     readonly imageDatabaseApiUrl = "https://api.unsplash.com/search/photos/"
 
     state: State = {
-        imagesUrls: new Array().fill({}),
+        imagesUrls: new Array(24).fill({}),
         isLoading: true,
-        likedImages: ls.get(this.props.view) || [],
-        isLiked: true
+        likedImages: [],
+        isLiked: true,
+    }
+    
+    private savedToLocal = (urls: ImageUrls) => {
+        let searchParam: string = this.props.view
+        let url = urls.small
+
+        let storageContentFromKey: string | null = localStorage.getItem(searchParam)
+
+        if(storageContentFromKey) {
+            let urlArray: string[] = JSON.parse(storageContentFromKey)
+            urlArray.push(url)
+            localStorage.setItem(searchParam, JSON.stringify(urlArray))
+        }else{
+            localStorage.setItem(searchParam, JSON.stringify(this.state.likedImages))
+        }
     }
 
-    handleImageLiked = (urls: ImageUrls) => {
-            this.setState(
-                {
-                    likedImages: ls.set(this.props.view, [urls])
-                }
-            )
+   private get handleImageLiked(){
+       if(localStorage.getItem(this.props.view)) {
+           console.log("localStorage finns!")
+           return
+       }else{
+           localStorage.setItem(this.props.view, JSON.stringify(this.state.likedImages))
+           console.log("en ny local har skapats!")
+       }
+   }
 
+    onImageLiked = (url: ImageUrls) => {
+        this.setState({
+            likedImages: [...this.state.likedImages, url],
+            isLiked: true
+        })
     }
 
-    private saved = ls.get(this.props.view) || []
 
     handleResponse(response: AxiosResponse) {
         if (response.data && response.data.results) {
@@ -65,22 +87,37 @@ export default class ImageSection extends Component<Props, State> {
     }
 
     componentDidUpdate(isLiked: any, urls: any) {
-/*        JSON.stringify(this.state.likedImages)
- */       this.handleImageLiked
-       /* console.log(localStorage[this.props.view])         
-       localStorage[this.props.view] = isLiked(this.props.view, [urls]) */
+/*         JSON.stringify(this.state.likedImages)
+ */        
+            this.onImageLiked
+
+        /* console.log(localStorage[this.props.view])         
+        localStorage[this.props.view] = isLiked(this.props.view, [urls]) */
+
+
+       /*  if(this.props.view in localStorage){
+            this.state.likedImages.push(JSON.parse(localStorage.getItem(this.state.likedImages)))
+            localStorage.setItem(this.props.view, urls, JSON.stringify(this.state.likedImages))
+        }else{
+            localStorage[this.props.view] = JSON.stringify(this.state.likedImages)
+            console.log("Det gick fel!")
+        } */
+
+
     }
+
+   
 
     render() {
         return (
             <ThemeContext.Consumer>
                 {({ theme }) => (
                     <div style={root(theme)}>
-                        {this.saved.map((links: ImageUrls, index:number) =>
-                            <ImageCard isLiked={true} view={this.props.view} key={index} urls={links} onImageLiked={this.handleImageLiked} />
+                        {this.state.likedImages.map((urls: ImageUrls, index:number) =>
+                            <ImageCard isLiked={true} view={this.props.view} key={index} urls={urls} onImageLiked={this.savedToLocal} />
                         )}  
                         {this.state.imagesUrls.map((urls, index) =>
-                            <ImageCard view={this.props.view} isLiked={false} key={index} urls={urls} onImageLiked={this.handleImageLiked}/>
+                            <ImageCard view={this.props.view} isLiked={false} key={index} urls={urls} onImageLiked={this.savedToLocal}/>
                         )}
                     </div>
                 )}

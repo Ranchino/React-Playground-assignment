@@ -64,8 +64,8 @@ export default class ImageCard extends Component<Props, State> {
     closeModal = () => this.setState({ isModalOpen: false });
 
     likeImage(event: React.MouseEvent<HTMLElement, MouseEvent>) {
-        event.stopPropagation();
         this.props.onImageLiked(this.props.urls);
+        event.stopPropagation();
     }
 
     render() {
