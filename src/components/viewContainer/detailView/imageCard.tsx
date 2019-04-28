@@ -2,7 +2,6 @@ import React, { Component, CSSProperties, Fragment } from 'react';
 import Spinner from '../../spinner';
 import Modal from '../../modal';
 import { ThemedCSSProperties, ThemeContext, ThemeState } from '../../../contexts/themeContext';
-import HeartIcon from '../../heartIcon';
 import ls from 'local-storage';
 //Testing
 
@@ -18,7 +17,8 @@ interface Props {
     urls: ImageUrls
     view: string
     isLiked: boolean
-    onImageLiked: (urls: ImageUrls) => void
+    onImageLiked: (urls: ImageUrls, index: number) => void
+    index: number
 
 }
 interface State {
@@ -64,7 +64,7 @@ export default class ImageCard extends Component<Props, State> {
     closeModal = () => this.setState({ isModalOpen: false });
 
     likeImage(event: React.MouseEvent<HTMLElement, MouseEvent>) {
-        this.props.onImageLiked(this.props.urls);
+        this.props.onImageLiked(this.props.urls, this.props.index);
         event.stopPropagation();
     }
 
