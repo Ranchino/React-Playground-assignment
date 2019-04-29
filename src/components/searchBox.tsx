@@ -1,5 +1,5 @@
 import React, { Component, CSSProperties } from 'react';
-import { Route, Switch, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ThemedCSSProperties, ThemeContext } from '../contexts/themeContext';
 import PropTypes from 'prop-types';
 import ls from 'local-storage';
@@ -17,9 +17,8 @@ export default class SearchBox extends Component<Props, State>{
         super(props);
 
         this.state = {
-            inputText: ''
+            inputText: ls.get("InputFieldSearch") || "",
         }
-        //test
         this.updateInput = this.updateInput.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
 
@@ -29,9 +28,15 @@ export default class SearchBox extends Component<Props, State>{
         this.setState({inputText : event.target.value})
     }
 
-    handleSubmit(){
-        console.log('Your input value is: ' + this.state.inputText)
-        //Send state to the server code
+    handleSubmit(event: any){
+        ls.set("InputFieldSearch", this.state.inputText);
+        const searchTerms = ls.get("InputFieldSearch");
+        console.log('Your input value is: ' + this.state.inputText);
+        event.stopPropagation()
+        if (event.which === 13) {
+            this.context.router.history.push(this.state.inputText)
+        }
+        this.setState({inputText: searchTerms})
     }
 
     static contextTypes = {
@@ -39,12 +44,12 @@ export default class SearchBox extends Component<Props, State>{
     }
 
 
-    handleKeyDown = (event: any) => {
+    /* handleKeyDown = (event: any) => {
         event.stopPropagation()
         if (event.which === 13) {
             this.context.router.history.push(this.state.inputText)
         }
-    }
+    } */
     
     render(){
         return(
@@ -52,7 +57,7 @@ export default class SearchBox extends Component<Props, State>{
                 {({ theme }) => (
                         <form>
                             <div style={searchContainer}>
-                                <input  type="text" onKeyPress={this.handleKeyDown} onChange={this.updateInput} style={searchStyle(theme)} value={this.state.inputText}></input>
+                                <input  type="text" placeholder="Search Field" onKeyPress={this.handleSubmit} onChange={this.updateInput} style={searchStyle(theme)} value={this.state.inputText}></input>
                                 <button type="submit" onClick={this.handleSubmit} style={searchButton(theme)}>
                                     <Link to={this.state.inputText} style={searchTextButton(theme)}>Sök</Link>
                                 </button>
