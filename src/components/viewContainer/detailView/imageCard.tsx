@@ -2,8 +2,7 @@ import React, { Component, CSSProperties, Fragment } from 'react';
 import Spinner from '../../spinner';
 import Modal from '../../modal';
 import { ThemedCSSProperties, ThemeContext, ThemeState } from '../../../contexts/themeContext';
-import ls from 'local-storage';
-//Testing
+
 
 export interface ImageUrls {
     full: string

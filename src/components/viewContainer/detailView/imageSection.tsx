@@ -4,7 +4,6 @@ import Axios, { AxiosResponse } from 'axios';
 import ImageCard, { ImageUrls } from './imageCard';
 import { ThemedCSSProperties, ThemeContext } from '../../../contexts/themeContext';
 
-import ls from 'local-storage';
 import LikedCards from './savedImages';
 
 
@@ -68,7 +67,7 @@ export default class ImageSection extends Component<Props, State> {
         localStorage.setItem(this.props.view, JSON.stringify(this.state.likedImages))
     }
 
-    componentDidUpdate(isLiked: any, urls: any) {
+    componentDidUpdate() {
         if(this.props.view in localStorage && this.state.likedImages.length === 0) {
             this.myImagesInLocal();
 
@@ -77,11 +76,11 @@ export default class ImageSection extends Component<Props, State> {
         }
     }
 
+
     onImageLiked = (url: ImageUrls, index: number) => {
         this.setState({
             likedImages: [...this.state.likedImages, url]
         });
-        //och tar bort bilden ur imageUrls-arrayen
         this.setState({
             imagesUrls: this.state.imagesUrls.filter((_, i) => i !== index)
         });
