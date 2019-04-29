@@ -4,8 +4,6 @@ import Axios, { AxiosResponse } from 'axios';
 import ImageCard, { ImageUrls } from './imageCard';
 import { ThemedCSSProperties, ThemeContext } from '../../../contexts/themeContext';
 
-import LikedCards from './savedImages';
-
 
 interface Props {
     view: string
